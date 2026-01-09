@@ -1,7 +1,12 @@
 "use client"
 
+<<<<<<< HEAD
 import { useState } from "react"
 import { storageUtils } from "@/lib/storage"
+=======
+import { useState, useEffect } from "react"
+import { fetchTransactions, fetchBudgets, deleteAllData, type UITransaction, type UIBudget } from "@/lib/data"
+>>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeftIcon, DownloadIcon, TrashIcon, InfoIcon } from "lucide-react"
@@ -10,11 +15,28 @@ import Link from "next/link"
 export default function SettingsPage() {
   const [showClearConfirm, setShowClearConfirm] = useState(false)
   const [exportMessage, setExportMessage] = useState("")
+<<<<<<< HEAD
 
   const handleExportData = () => {
     const transactions = storageUtils.getTransactions()
     const budgets = storageUtils.getBudgets()
 
+=======
+  const [transactions, setTransactions] = useState<UITransaction[]>([])
+  const [budgets, setBudgets] = useState<UIBudget[]>([])
+
+  useEffect(() => {
+    const loadData = async () => {
+      const txs = await fetchTransactions()
+      const bgs = await fetchBudgets()
+      setTransactions(txs)
+      setBudgets(bgs)
+    }
+    loadData()
+  }, [])
+
+  const handleExportData = () => {
+>>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
     const data = {
       exported: new Date().toISOString(),
       transactions,
@@ -34,16 +56,24 @@ export default function SettingsPage() {
     setTimeout(() => setExportMessage(""), 3000)
   }
 
+<<<<<<< HEAD
   const handleClearAllData = () => {
     localStorage.removeItem("pfm_transactions")
     localStorage.removeItem("pfm_budgets")
+=======
+  const handleClearAllData = async () => {
+    await deleteAllData()
+>>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
     setShowClearConfirm(false)
     window.location.href = "/"
   }
 
+<<<<<<< HEAD
   const transactions = storageUtils.getTransactions()
   const budgets = storageUtils.getBudgets()
 
+=======
+>>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
