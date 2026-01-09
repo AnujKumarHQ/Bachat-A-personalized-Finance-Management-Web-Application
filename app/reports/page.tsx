@@ -1,22 +1,5 @@
 "use client"
 
-<<<<<<< HEAD
-import { useEffect, useState } from "react"
-import { storageUtils, type Transaction } from "@/lib/storage"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeftIcon, DownloadIcon } from "lucide-react"
-import Link from "next/link"
-import { formatCurrency } from "@/lib/currency"
-import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-=======
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -27,36 +10,12 @@ import { useCurrency } from "@/components/currency-provider"
 import {
   BarChart,
   Bar,
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-<<<<<<< HEAD
-  Legend,
-  ResponsiveContainer,
-} from "recharts"
-
-export default function ReportsPage() {
-  const [transactions, setTransactions] = useState<Transaction[]>([])
-  const [timeRange, setTimeRange] = useState<"month" | "quarter" | "year">("month")
-
-  useEffect(() => {
-    setTransactions(storageUtils.getTransactions())
-  }, [])
-
-  const now = new Date()
-  const getDateRange = () => {
-    const start = new Date()
-    if (timeRange === "month") {
-      start.setMonth(start.getMonth() - 1)
-    } else if (timeRange === "quarter") {
-      start.setMonth(start.getMonth() - 3)
-    } else {
-      start.setFullYear(start.getFullYear() - 1)
-    }
-=======
-  ResponsiveContainer,
+ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
@@ -204,7 +163,7 @@ export default function ReportsPage() {
   const getDateRange = () => {
     const start = new Date()
     start.setMonth(start.getMonth() - 1) // Default to last month
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
     return start
   }
 
@@ -215,10 +174,8 @@ export default function ReportsPage() {
   const income = filtered.filter((t) => t.type === "income").reduce((sum, t) => sum + t.amount, 0)
   const expenses = filtered.filter((t) => t.type === "expense").reduce((sum, t) => sum + t.amount, 0)
   const net = income - expenses
-<<<<<<< HEAD
-=======
-  const savingsRate = income > 0 ? ((income - expenses) / income) * 100 : 0
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+const savingsRate = income > 0 ? ((income - expenses) / income) * 100 : 0
+
 
   // Prepare data for monthly trend chart
   const monthlyData: Record<string, { month: string; income: number; expense: number }> = {}
@@ -256,19 +213,13 @@ export default function ReportsPage() {
       categoryData[t.category] = (categoryData[t.category] || 0) + t.amount
     })
 
-<<<<<<< HEAD
-  const pieData = Object.entries(categoryData).map(([name, value]) => ({
-    name,
-    value: Math.round(value),
-  }))
-=======
-  const pieData = Object.entries(categoryData)
+const pieData = Object.entries(categoryData)
     .map(([name, value]) => ({
       name,
       value: Math.round(value),
     }))
     .sort((a, b) => b.value - a.value)
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
 
   const categoryBreakdown: Record<string, { amount: number; percentage: number }> = {}
   filtered
@@ -284,38 +235,7 @@ export default function ReportsPage() {
     categoryBreakdown[key].percentage = expenses > 0 ? (value.amount / expenses) * 100 : 0
   })
 
-<<<<<<< HEAD
-  const COLORS = [
-    "oklch(0.45 0.15 200)",
-    "oklch(0.55 0.18 140)",
-    "oklch(0.65 0.12 50)",
-    "oklch(0.40 0.14 250)",
-    "oklch(0.50 0.16 180)",
-    "oklch(0.58 0.22 30)",
-  ]
-
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card">
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link href="/">
-                <Button variant="ghost" size="icon">
-                  <ArrowLeftIcon className="h-5 w-5" />
-                </Button>
-              </Link>
-              <div>
-                <h1 className="text-3xl font-bold text-foreground">Financial Reports</h1>
-                <p className="mt-1 text-sm text-muted-foreground">Analyze your financial performance</p>
-              </div>
-            </div>
-            <Button variant="outline" className="gap-2 bg-transparent">
-              <DownloadIcon className="h-4 w-4" />
-              Export
-=======
-  // Sort categories by amount
+// Sort categories by amount
   const sortedCategories = Object.entries(categoryBreakdown).sort((a, b) => b[1].amount - a[1].amount)
 
   const COLORS = [
@@ -359,56 +279,13 @@ export default function ReportsPage() {
                 <DownloadIcon className="h-4 w-4" />
               )}
               {isExporting ? "Exporting..." : "Export Report"}
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
             </Button>
           </div>
         </div>
       </header>
 
-<<<<<<< HEAD
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Time Range Selector */}
-        <div className="mb-8 flex gap-2">
-          {(["month", "quarter", "year"] as const).map((range) => (
-            <Button
-              key={range}
-              variant={timeRange === range ? "default" : "outline"}
-              onClick={() => setTimeRange(range)}
-              className="capitalize"
-            >
-              Last {range === "month" ? "Month" : range === "quarter" ? "Quarter" : "Year"}
-            </Button>
-          ))}
-        </div>
-
-        {/* Summary Cards */}
-        <div className="grid gap-4 md:grid-cols-3">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Income</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold text-accent">{formatCurrency(income)}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Expenses</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold text-destructive">{formatCurrency(expenses)}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Net Income</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className={`text-2xl font-bold ${net >= 0 ? "text-accent" : "text-destructive"}`}>
-                {formatCurrency(net)}
-              </p>
-=======
-      <div ref={reportRef} className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+<div ref={reportRef} className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
         {/* Latest Activities Label */}
         <div className="flex justify-center">
           <div className="inline-flex px-6 py-2 bg-white rounded-full border border-slate-200 shadow-sm">
@@ -484,54 +361,12 @@ export default function ReportsPage() {
                   style={{ width: `${Math.max(0, Math.min(100, savingsRate))}%` }}
                 />
               </div>
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
             </CardContent>
           </Card>
         </div>
 
-<<<<<<< HEAD
-        {/* Charts */}
-        <div className="mt-8 grid gap-8 lg:grid-cols-2">
-          {/* Trend Chart */}
-          {trendData.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Income vs Expenses Trend</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={trendData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                    <XAxis dataKey="month" stroke="var(--muted-foreground)" />
-                    <YAxis stroke="var(--muted-foreground)" />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "var(--card)",
-                        border: `1px solid var(--border)`,
-                        borderRadius: "8px",
-                      }}
-                      labelStyle={{ color: "var(--foreground)" }}
-                      formatter={(value) => formatCurrency(value as number)}
-                    />
-                    <Legend />
-                    <Line type="monotone" dataKey="income" stroke="var(--accent)" strokeWidth={2} dot={false} />
-                    <Line type="monotone" dataKey="expense" stroke="var(--destructive)" strokeWidth={2} dot={false} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Category Pie Chart */}
-          {pieData.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Expense Distribution</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-=======
-        {/* Charts Section */}
+{/* Charts Section */}
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Trend Chart - Takes up 2 columns */}
           <Card className="lg:col-span-2 border-none shadow-md bg-white/80 backdrop-blur-sm">
@@ -608,89 +443,25 @@ export default function ReportsPage() {
             <CardContent className="flex-1 flex flex-col justify-center">
               <div className="h-[300px] w-full relative">
                 <ResponsiveContainer width="100%" height="100%">
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
                   <PieChart>
                     <Pie
                       data={pieData}
                       cx="50%"
                       cy="50%"
-<<<<<<< HEAD
-                      labelLine={false}
-                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {pieData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-=======
-                      innerRadius={60}
+innerRadius={60}
                       outerRadius={80}
                       paddingAngle={5}
                       dataKey="value"
                     >
                       {pieData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} strokeWidth={0} />
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
                       ))}
                     </Pie>
                     <Tooltip
                       contentStyle={{
-<<<<<<< HEAD
-                        backgroundColor: "var(--card)",
-                        border: `1px solid var(--border)`,
-                        borderRadius: "8px",
-                      }}
-                      labelStyle={{ color: "var(--foreground)" }}
-                      formatter={(value) => formatCurrency(value as number)}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-
-        {/* Monthly Breakdown Chart */}
-        {trendData.length > 0 && (
-          <Card className="mt-8">
-            <CardHeader>
-              <CardTitle>Monthly Breakdown</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={trendData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                  <XAxis dataKey="month" stroke="var(--muted-foreground)" />
-                  <YAxis stroke="var(--muted-foreground)" />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "var(--card)",
-                      border: `1px solid var(--border)`,
-                      borderRadius: "8px",
-                    }}
-                    labelStyle={{ color: "var(--foreground)" }}
-                    formatter={(value) => formatCurrency(value as number)}
-                  />
-                  <Legend />
-                  <Bar dataKey="income" fill="var(--accent)" />
-                  <Bar dataKey="expense" fill="var(--destructive)" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Category Breakdown Table */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Category Analysis</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {Object.entries(categoryBreakdown).length === 0 ? (
-              <p className="text-center text-muted-foreground">No data available</p>
-=======
-                        backgroundColor: "rgba(255, 255, 255, 0.9)",
+backgroundColor: "rgba(255, 255, 255, 0.9)",
                         border: "none",
                         borderRadius: "8px",
                         boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
@@ -740,29 +511,12 @@ export default function ReportsPage() {
               <div className="p-8 text-center text-slate-500">
                 No expense data available for this period
               </div>
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-<<<<<<< HEAD
-                    <tr className="border-b border-border">
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Category</th>
-                      <th className="px-4 py-3 text-right text-sm font-semibold text-foreground">Amount</th>
-                      <th className="px-4 py-3 text-right text-sm font-semibold text-foreground">% of Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Object.entries(categoryBreakdown).map(([category, values]) => (
-                      <tr key={category} className="border-b border-border hover:bg-muted">
-                        <td className="px-4 py-3 text-sm text-foreground">{category}</td>
-                        <td className="px-4 py-3 text-right text-sm text-destructive">
-                          {formatCurrency(values.amount)}
-                        </td>
-                        <td className="px-4 py-3 text-right text-sm text-foreground">
-                          {values.percentage.toFixed(1)}%
-=======
-                    <tr className="bg-slate-50/50">
+<tr className="bg-slate-50/50">
                       <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Category</th>
                       <th className="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Amount</th>
                       <th className="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">% of Total</th>
@@ -799,7 +553,7 @@ export default function ReportsPage() {
                               }}
                             />
                           </div>
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
                         </td>
                       </tr>
                     ))}

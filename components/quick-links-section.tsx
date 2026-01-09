@@ -45,13 +45,9 @@ export default function QuickLinksSection() {
         {links.map((link) => {
           const Icon = link.icon
           return (
-<<<<<<< HEAD
-            <Link key={link.href} href={link.href}>
-              <Card className="transition-all hover:border-primary hover:shadow-md">
-=======
-            <Link key={link.href} href={link.href} className="block h-full">
+<Link key={link.href} href={link.href} className="block h-full">
               <Card className="transition-all hover:border-primary hover:shadow-md h-full">
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
                 <CardContent className="pt-6">
                   <div className="mb-3 inline-flex rounded-lg bg-primary/10 p-3">
                     <Icon className="h-5 w-5 text-primary" />

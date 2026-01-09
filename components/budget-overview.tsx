@@ -5,22 +5,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AlertCircleIcon } from "lucide-react"
 import SpendingPieChart from "./spending-pie-chart"
 
-<<<<<<< HEAD
-=======
 import { useCurrency } from "@/components/currency-provider"
 
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
 interface BudgetOverviewProps {
   budgets: Budget[]
   transactions: Transaction[]
 }
 
 export default function BudgetOverview({ budgets, transactions }: BudgetOverviewProps) {
-<<<<<<< HEAD
-=======
-  const { formatAmount } = useCurrency()
+const { formatAmount } = useCurrency()
 
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
   const calculateCategorySpent = (category: string) => {
     return transactions
       .filter((t) => t.type === "expense" && t.category === category)
@@ -36,35 +32,7 @@ export default function BudgetOverview({ budgets, transactions }: BudgetOverview
 
   return (
     <div className="space-y-6">
-<<<<<<< HEAD
-      <Card>
-        <CardHeader>
-          <CardTitle>Budget Status</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {budsWithSpent.length === 0 ? (
-            <p className="text-center text-muted-foreground py-8 text-sm">
-              No budgets set. Create one to track spending!
-            </p>
-          ) : (
-            <div className="space-y-4">
-              {budsWithSpent.map((budget) => {
-                const percentage = Math.min((budget.spent / budget.limit) * 100, 100)
-                const isExceeded = budget.spent > budget.limit
-
-                return (
-                  <div key={budget.id} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium text-foreground">{budget.category}</p>
-                      <p className="text-sm text-muted-foreground">
-                        ${budget.spent.toFixed(0)}/${budget.limit}
-                      </p>
-                    </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-muted">
-                      <div
-                        className={`h-full transition-all ${isExceeded ? "bg-destructive" : "bg-accent"}`}
-=======
-      <Card className="overflow-hidden border-none shadow-md bg-white/50 backdrop-blur-sm">
+<Card className="overflow-hidden border-none shadow-md bg-white/50 backdrop-blur-sm">
         <CardHeader className="border-b border-border/50 bg-muted/30 pb-4">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             Budget Status
@@ -110,21 +78,15 @@ export default function BudgetOverview({ budgets, transactions }: BudgetOverview
                     <div className="h-2.5 w-full overflow-hidden rounded-full bg-muted/50">
                       <div
                         className={`h-full transition-all duration-500 ease-out rounded-full ${colorClass}`}
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
                     {isExceeded && (
-<<<<<<< HEAD
-                      <div className="flex items-center gap-1 text-xs text-destructive">
-                        <AlertCircleIcon className="h-3 w-3" />
-                        Over budget by ${(budget.spent - budget.limit).toFixed(2)}
-                      </div>
-=======
-                      <p className="text-xs text-destructive font-medium">
+<p className="text-xs text-destructive font-medium">
                         Exceeded by {formatAmount(budget.spent - budget.limit)}
                       </p>
->>>>>>> e84ca4ff3905f27b57c9f20969a6c56742ed1608
+
                     )}
                   </div>
                 )
