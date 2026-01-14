@@ -107,7 +107,7 @@ export default function SpendingPieChart({ budgets, transactions }: SpendingPieC
   const currencySymbol = formatAmount(0).replace(/[0-9.,\s]/g, '')
 
   return (
-    <Card className="overflow-hidden border-none shadow-md bg-white/50 backdrop-blur-sm">
+    <Card className="overflow-hidden shadow-md">
       <CardHeader className="flex flex-row items-center justify-between border-b border-border/50 bg-muted/30 pb-4">
         <CardTitle className="text-lg font-semibold">Monthly Overview</CardTitle>
         <Dialog open={open} onOpenChange={setOpen}>

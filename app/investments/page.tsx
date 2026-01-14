@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { fetchInvestments, addInvestment, deleteInvestment, type UIInvestment } from "@/lib/data"
 import { useCurrency } from "@/components/currency-provider"
 import { InvestmentProjectionCard } from "@/components/investment-projection-card"
+import MarketOverview from "@/components/market-overview"
 import AddInvestmentModal from "@/components/add-investment-modal"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -101,6 +102,11 @@ export default function InvestmentsPage() {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+        {/* Market Overview */}
+        <div className="w-full">
+          <MarketOverview />
+        </div>
+
         {/* Investment Summary Cards */}
         <div className="grid gap-4 md:grid-cols-4">
           <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-200/20">

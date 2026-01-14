@@ -5,9 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { AlertCircle, ArrowRight, CheckCircle } from 'lucide-react'
-// import { authUtils } from "@/lib/auth"
+import { AlertCircle, CheckCircle, ShieldCheck, Globe2 } from 'lucide-react'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -31,8 +29,8 @@ export default function SignupPage() {
     setError("")
     setLoading(true)
 
-    // Simulate signup delay
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    // Simulate signup delay for smoother feel
+    await new Promise((resolve) => setTimeout(resolve, 800))
 
     // Validation
     if (!fullName || !email || !password || !confirmPassword) {
@@ -54,7 +52,7 @@ export default function SignupPage() {
     }
 
     if (!allRequirements) {
-      setError("Password must be at least 6 characters and contain a number and special character")
+      setError("Password must meet all strength requirements")
       setLoading(false)
       return
     }
@@ -82,163 +80,176 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background to-secondary px-4">
-      <div className="w-full max-w-md">
-        {/* Logo Section */}
-        <div className="mb-8 text-center">
-          <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary">
-            <span className="text-xl font-bold text-primary-foreground">₹</span>
+    <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
+      {/* Left Column: Form */}
+      <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background">
+        <div className="mx-auto grid w-full max-w-[400px] gap-6">
+          {/* Mobile Logo */}
+          <div className="flex lg:hidden flex-col items-center mb-6 text-center">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary mb-2">
+              <span className="text-lg font-bold text-primary-foreground">₹</span>
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight">Bachat</h1>
           </div>
-          <h1 className="text-3xl font-bold text-foreground">Bachat</h1>
-          <p className="mt-2 text-muted-foreground">Save for your future, manage today</p>
-        </div>
 
-        {/* Signup Card */}
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle>Create your account</CardTitle>
-            <CardDescription>Join Bachat to start managing your finances</CardDescription>
-          </CardHeader>
+          <div className="grid gap-2 text-center lg:text-left">
+            <h1 className="text-3xl font-bold tracking-tight">Create an account</h1>
+            <p className="text-balance text-muted-foreground">
+              Enter your information below to get started
+            </p>
+          </div>
 
-          <CardContent>
-            <form onSubmit={handleSignup} className="space-y-4">
-              {/* Error Message */}
-              {error && (
-                <div className="flex items-center gap-3 rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
-                  <AlertCircle className="h-4 w-4 shrink-0" />
-                  <span>{error}</span>
-                </div>
-              )}
-
-              {/* Full Name Input */}
-              <div className="space-y-2">
-                <label htmlFor="fullName" className="text-sm font-medium text-foreground">
-                  Full name
-                </label>
-                <Input
-                  id="fullName"
-                  type="text"
-                  placeholder="John Doe"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  disabled={loading}
-                  className="h-10"
-                />
+          <form onSubmit={handleSignup} className="grid gap-4">
+            {error && (
+              <div className="flex items-center gap-3 rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive animate-in fade-in slide-in-from-top-2">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                <span>{error}</span>
               </div>
+            )}
 
-              {/* Email Input */}
-              <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium text-foreground">
-                  Email address
-                </label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={loading}
-                  className="h-10"
-                />
-              </div>
+            <div className="grid gap-2">
+              <label htmlFor="fullName" className="text-sm font-medium leading-none">
+                Full Name
+              </label>
+              <Input
+                id="fullName"
+                type="text"
+                placeholder="John Doe"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                disabled={loading}
+                className="h-11 bg-muted/30"
+                required
+              />
+            </div>
 
-              {/* Password Input */}
-              <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium text-foreground">
-                  Password
-                </label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={loading}
-                  className="h-10"
-                />
+            <div className="grid gap-2">
+              <label htmlFor="email" className="text-sm font-medium leading-none">
+                Email
+              </label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
+                className="h-11 bg-muted/30"
+                required
+              />
+            </div>
 
-                {/* Password Strength Indicator */}
-                {password && (
-                  <div className="space-y-2">
-                    <div
-                      className={`h-1 rounded-full transition-colors ${
-                        allRequirements ? "bg-accent" : "bg-muted"
-                      }`}
-                    />
-                    <div className="space-y-1 text-xs">
-                      <div className={`flex items-center gap-2 ${passwordStrength.hasLength ? "text-accent" : "text-muted-foreground"}`}>
-                        <CheckCircle className="h-3 w-3" />
-                        At least 6 characters
-                      </div>
-                      <div className={`flex items-center gap-2 ${passwordStrength.hasNumber ? "text-accent" : "text-muted-foreground"}`}>
-                        <CheckCircle className="h-3 w-3" />
-                        Contains a number
-                      </div>
-                      <div className={`flex items-center gap-2 ${passwordStrength.hasSpecial ? "text-accent" : "text-muted-foreground"}`}>
-                        <CheckCircle className="h-3 w-3" />
-                        Contains a special character (!@#$%^&*)
-                      </div>
+            <div className="grid gap-2">
+              <label htmlFor="password" className="text-sm font-medium leading-none">
+                Password
+              </label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+                className="h-11 bg-muted/30"
+                required
+              />
+              {/* Password Strength */}
+              {password && (
+                <div className="space-y-2 mt-2 p-3 bg-muted/50 rounded-lg border border-border/50">
+                  <div className="space-y-1.5 text-xs">
+                    <div className={`flex items-center gap-2 ${passwordStrength.hasLength ? "text-green-500" : "text-muted-foreground"}`}>
+                      <CheckCircle className="h-3.5 w-3.5" />
+                      At least 6 characters
+                    </div>
+                    <div className={`flex items-center gap-2 ${passwordStrength.hasNumber ? "text-green-500" : "text-muted-foreground"}`}>
+                      <CheckCircle className="h-3.5 w-3.5" />
+                      Contains a number
+                    </div>
+                    <div className={`flex items-center gap-2 ${passwordStrength.hasSpecial ? "text-green-500" : "text-muted-foreground"}`}>
+                      <CheckCircle className="h-3.5 w-3.5" />
+                      Contains special character (!@#$)
                     </div>
                   </div>
-                )}
-              </div>
-
-              {/* Confirm Password Input */}
-              <div className="space-y-2">
-                <label htmlFor="confirmPassword" className="text-sm font-medium text-foreground">
-                  Confirm password
-                </label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="••••••••"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  disabled={loading}
-                  className="h-10"
-                />
-              </div>
-
-              {/* Terms */}
-              <div className="flex items-start gap-2 text-xs text-muted-foreground">
-                <input type="checkbox" className="mt-1 rounded" />
-                <span>
-                  I agree to the{" "}
-                  <Link href="#" className="text-primary hover:underline">
-                    Terms of Service
-                  </Link>
-                  {" "}and{" "}
-                  <Link href="#" className="text-primary hover:underline">
-                    Privacy Policy
-                  </Link>
-                </span>
-              </div>
-
-              {/* Sign Up Button */}
-              <Button type="submit" disabled={loading} className="w-full gap-2" size="lg">
-                {loading ? "Creating account..." : "Sign up"}
-                {!loading && <ArrowRight className="h-4 w-4" />}
-              </Button>
-
-              {/* Divider */}
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-border" />
                 </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-card px-2 text-muted-foreground">Already have an account?</span>
-                </div>
-              </div>
+              )}
+            </div>
 
-              {/* Sign In Link */}
-              <p className="text-center text-sm text-muted-foreground">
-                <Link href="/login" className="font-semibold text-primary hover:underline">
-                  Sign in
-                </Link>
+            <div className="grid gap-2">
+              <label htmlFor="confirmPassword" className="text-sm font-medium leading-none">
+                Confirm Password
+              </label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                disabled={loading}
+                className="h-11 bg-muted/30"
+                required
+              />
+            </div>
+
+            <Button type="submit" className="w-full h-11 mt-2" disabled={loading}>
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  Creating account...
+                </div>
+              ) : (
+                "Create account"
+              )}
+            </Button>
+          </form>
+
+          <div className="mt-4 text-center text-sm">
+            Already have an account?{" "}
+            <Link href="/login" className="underline font-medium text-primary hover:text-primary/90">
+              Sign in
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Column: Visuals */}
+      <div className="hidden bg-muted lg:block relative overflow-hidden">
+        {/* Background Image / Gradient */}
+        <div className="absolute inset-0 bg-zinc-900">
+          <div className="absolute inset-0 bg-gradient-to-tl from-indigo-600/20 via-transparent to-rose-600/20" />
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2936&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay" />
+        </div>
+
+        <div className="relative h-full flex flex-col justify-between p-12 text-white">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded bg-white text-black">
+              <span className="font-bold">₹</span>
+            </div>
+            <span className="text-xl font-bold tracking-tight">Bachat</span>
+          </div>
+
+          <div className="space-y-6 max-w-lg">
+            <blockquote className="space-y-2">
+              <p className="text-2xl font-medium leading-relaxed">
+                &ldquo;The best time to start managing your finances was yesterday. The second best time is today.&rdquo;
               </p>
-            </form>
-          </CardContent>
-        </Card>
+            </blockquote>
+
+            <div className="flex gap-4 pt-4 border-t border-white/10">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <ShieldCheck className="h-4 w-4 text-green-400" />
+                  Privacy First
+                </div>
+                <p className="text-xs opacity-60">We never sell your data</p>
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <Globe2 className="h-4 w-4 text-blue-400" />
+                  Accessible
+                </div>
+                <p className="text-xs opacity-60">Manage from anywhere</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

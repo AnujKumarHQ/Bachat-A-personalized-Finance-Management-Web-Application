@@ -119,7 +119,7 @@ export default function TransactionsPage() {
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
         {/* Stats Cards */}
         <div className="grid gap-6 md:grid-cols-3">
-          <Card className="border-none shadow-md bg-white/50 backdrop-blur-sm overflow-hidden relative">
+          <Card className="border-none shadow-md bg-card overflow-hidden relative">
             <div className="absolute right-0 top-0 p-16 bg-green-500/10 rounded-full -mr-8 -mt-8 blur-2xl" />
             <CardHeader className="pb-2 relative z-10">
               <CardTitle className="text-sm font-medium text-muted-foreground">Total Income</CardTitle>
@@ -128,7 +128,7 @@ export default function TransactionsPage() {
               <p className="text-3xl font-bold text-green-600">{formatCurrency(totalIncome)}</p>
             </CardContent>
           </Card>
-          <Card className="border-none shadow-md bg-white/50 backdrop-blur-sm overflow-hidden relative">
+          <Card className="border-none shadow-md bg-card overflow-hidden relative">
             <div className="absolute right-0 top-0 p-16 bg-red-500/10 rounded-full -mr-8 -mt-8 blur-2xl" />
             <CardHeader className="pb-2 relative z-10">
               <CardTitle className="text-sm font-medium text-muted-foreground">Total Expenses</CardTitle>
@@ -137,7 +137,7 @@ export default function TransactionsPage() {
               <p className="text-3xl font-bold text-red-600">{formatCurrency(totalExpense)}</p>
             </CardContent>
           </Card>
-          <Card className="border-none shadow-md bg-white/50 backdrop-blur-sm overflow-hidden relative">
+          <Card className="border-none shadow-md bg-card overflow-hidden relative">
             <div className={`absolute right-0 top-0 p-16 rounded-full -mr-8 -mt-8 blur-2xl ${totalIncome - totalExpense >= 0 ? "bg-blue-500/10" : "bg-orange-500/10"
               }`} />
             <CardHeader className="pb-2 relative z-10">
@@ -172,7 +172,7 @@ export default function TransactionsPage() {
 
             {/* Category Breakdown */}
             {Object.keys(categoryBreakdown).length > 0 && (
-              <Card className="border-none shadow-md bg-white/50 backdrop-blur-sm">
+              <Card className="border-none shadow-md bg-card">
                 <CardHeader className="border-b border-border/50 bg-muted/30 pb-4">
                   <CardTitle className="text-lg font-semibold">Category Breakdown</CardTitle>
                 </CardHeader>

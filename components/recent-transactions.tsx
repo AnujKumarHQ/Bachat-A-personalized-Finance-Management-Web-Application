@@ -27,7 +27,7 @@ export default function RecentTransactions({ transactions, onDelete }: RecentTra
   const recent = sorted.slice(0, 10)
 
   return (
-    <Card className="overflow-hidden border-none shadow-md bg-white/50 backdrop-blur-sm h-full">
+    <Card className="overflow-hidden shadow-md h-full">
       <CardHeader className="flex flex-row items-center justify-between border-b border-border/50 bg-muted/30 pb-4">
         <CardTitle className="text-lg font-semibold">Recent Transactions</CardTitle>
         <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground">

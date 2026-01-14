@@ -25,7 +25,7 @@ export default function TransactionFilters({
   onDateRangeChange,
 }: TransactionFiltersProps) {
   return (
-    <Card className="border-none shadow-md bg-white/50 backdrop-blur-sm h-full">
+    <Card className="shadow-md h-full">
       <CardHeader className="border-b border-border/50 bg-muted/30 pb-4">
         <CardTitle className="flex items-center gap-2 text-lg font-semibold">
           <FilterIcon className="h-4 w-4" />

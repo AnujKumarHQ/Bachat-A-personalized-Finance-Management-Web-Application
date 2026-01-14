@@ -76,7 +76,7 @@ export default function OverviewCards({ transactions, accountBalance, className 
 
   return (
     <div className={`grid gap-4 md:grid-cols-2 ${className}`}>
-      <Card className="h-full bg-white/50 backdrop-blur-sm border-none shadow-sm">
+      <Card className="h-full shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">Total Income</CardTitle>
           <div className="h-8 w-8 rounded-full bg-emerald-100 p-1.5 text-emerald-600">
@@ -88,7 +88,7 @@ export default function OverviewCards({ transactions, accountBalance, className 
           {renderChange(incomeChange, false)}
         </CardContent>
       </Card>
-      <Card className="h-full bg-white/50 backdrop-blur-sm border-none shadow-sm">
+      <Card className="h-full shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">Total Expenses</CardTitle>
           <div className="h-8 w-8 rounded-full bg-red-100 p-1.5 text-red-600">

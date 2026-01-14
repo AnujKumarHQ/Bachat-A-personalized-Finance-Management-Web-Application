@@ -26,7 +26,7 @@ export default function TransactionList({ transactions, onDelete }: TransactionL
 
   if (transactions.length === 0) {
     return (
-      <Card className="border-none shadow-md bg-white/50 backdrop-blur-sm">
+      <Card className="shadow-md">
         <CardContent className="py-16">
           <div className="flex flex-col items-center justify-center text-center">
             <div className="rounded-full bg-muted p-4 mb-4">
@@ -43,7 +43,7 @@ export default function TransactionList({ transactions, onDelete }: TransactionL
   const sorted = [...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   return (
-    <Card className="overflow-hidden border-none shadow-md bg-white/50 backdrop-blur-sm">
+    <Card className="overflow-hidden shadow-md">
       <CardHeader className="border-b border-border/50 bg-muted/30 pb-4">
         <CardTitle className="text-lg font-semibold">Transactions ({sorted.length})</CardTitle>
       </CardHeader>

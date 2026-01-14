@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation'
 import CurrencySelector from "@/components/currency-selector"
 
 import { useCurrency } from "@/components/currency-provider"
+import { ModeToggle } from "@/components/mode-toggle"
 
 import { useUser } from "@/components/user-provider"
 
@@ -75,6 +76,7 @@ export default function DashboardHeader({ onAddClick }: DashboardHeaderProps) {
           <div className="flex gap-3 items-center">
             {user ? (
               <>
+                <ModeToggle />
                 <CurrencySelector />
                 <Link href="/settings">
                   <Button variant="ghost" size="icon" className="text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full">

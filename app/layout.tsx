@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { CurrencyProvider } from "@/components/currency-provider"
 import { UserProvider } from "@/components/user-provider"
+import { ThemeProvider } from "@/components/theme-provider"
+import AppFooter from "@/components/app-footer"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -25,13 +27,25 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`font-sans antialiased`}>
-        <UserProvider>
-          <CurrencyProvider>
-            {children}
-          </CurrencyProvider>
-        </UserProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <UserProvider>
+            <CurrencyProvider>
+              <div className="flex min-h-screen flex-col">
+                <div className="flex-1">
+                  {children}
+                </div>
+                <AppFooter />
+              </div>
+            </CurrencyProvider>
+          </UserProvider>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

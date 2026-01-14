@@ -158,6 +158,27 @@ export async function addBudget(input: { category: string; limit: number; month:
   return data
 }
 
+export async function updateBudget(id: string, updates: { category?: string; limit?: number; month?: string }) {
+  const userId = await getUserId()
+  if (!userId) return null
+
+  const dbUpdates: any = {}
+  if (updates.category) dbUpdates.category = updates.category
+  if (updates.limit !== undefined) dbUpdates.limit_amount = updates.limit
+  if (updates.month) dbUpdates.month = updates.month
+
+  const { data, error } = await supabaseBrowser
+    .from("budgets")
+    .update(dbUpdates)
+    .eq("id", id)
+    .eq("profile_id", userId)
+    .select()
+    .single()
+
+  if (error) throw new Error(error.message)
+  return data
+}
+
 export async function deleteBudget(id: string) {
   const userId = await getUserId()
   if (!userId) return

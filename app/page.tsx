@@ -10,6 +10,7 @@ import BudgetOverview from "@/components/budget-overview"
 import AddTransactionModal from "@/components/add-transaction-modal"
 import QuickLinksSection from "@/components/quick-links-section"
 import BalanceCard from "@/components/balance-card"
+import MarketOverview from "@/components/market-overview"
 import { fetchTransactions, addTransaction as addTxn, deleteTransaction as deleteTxn, fetchBudgets, fetchBalance, type UITransaction, type UIBudget } from "@/lib/data"
 
 export default function Home() {
@@ -93,6 +94,11 @@ export default function Home() {
           <div className="md:col-span-8 lg:col-span-9">
             <OverviewCards transactions={transactions} accountBalance={balance} className="h-full" />
           </div>
+        </div>
+
+        {/* Market Overview */}
+        <div className="w-full">
+          <MarketOverview />
         </div>
 
         {/* Quick Actions */}

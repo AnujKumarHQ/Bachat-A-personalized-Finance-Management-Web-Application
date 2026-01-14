@@ -30,7 +30,7 @@ export default function BudgetOverview({ budgets, transactions }: BudgetOverview
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-none shadow-md bg-white/50 backdrop-blur-sm">
+      <Card className="overflow-hidden shadow-md">
         <CardHeader className="border-b border-border/50 bg-muted/30 pb-4">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             Budget Status

@@ -45,7 +45,7 @@ export default function SavingsCard({ savings, onDelete, onUpdate }: SavingsCard
     }
 
     return (
-        <Card className="overflow-hidden border-none shadow-md bg-white/50 backdrop-blur-sm transition-all hover:shadow-lg group">
+        <Card className="overflow-hidden shadow-md transition-all hover:shadow-lg group">
             <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                     <div className="space-y-1">

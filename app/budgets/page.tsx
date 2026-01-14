@@ -9,12 +9,14 @@ import { ArrowLeftIcon, PlusIcon, WalletIcon, AlertTriangleIcon, CheckCircleIcon
 import Link from "next/link"
 import BudgetCard from "@/components/budget-card"
 import AddBudgetModal from "@/components/add-budget-modal"
-import { fetchBudgets, addBudget as addBudgetDb, deleteBudget as deleteBudgetDb, fetchTransactions } from "@/lib/data"
+import EditBudgetModal from "@/components/edit-budget-modal"
+import { fetchBudgets, addBudget as addBudgetDb, updateBudget as updateBudgetDb, deleteBudget as deleteBudgetDb, fetchTransactions } from "@/lib/data"
 
 export default function BudgetsPage() {
   const [budgets, setBudgets] = useState<Budget[]>([])
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [showAddModal, setShowAddModal] = useState(false)
+  const [editingBudget, setEditingBudget] = useState<Budget | null>(null)
   const { formatAmount } = useCurrency()
 
   useEffect(() => {
@@ -36,6 +38,13 @@ export default function BudgetsPage() {
     await deleteBudgetDb(id)
     const buds = await fetchBudgets()
     setBudgets(buds as any)
+  }
+
+  const handleUpdateBudget = async (id: string, updates: Partial<Budget>) => {
+    await updateBudgetDb(id, updates)
+    const buds = await fetchBudgets()
+    setBudgets(buds as any)
+    setEditingBudget(null)
   }
 
   const calculateCategorySpent = (category: string) => {
@@ -161,7 +170,12 @@ export default function BudgetsPage() {
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {budsWithSpent.map((budget) => (
-                <BudgetCard key={budget.id} budget={budget} onDelete={handleDeleteBudget} />
+                <BudgetCard
+                  key={budget.id}
+                  budget={budget}
+                  onDelete={handleDeleteBudget}
+                  onEdit={setEditingBudget}
+                />
               ))}
             </div>
           )}
@@ -169,6 +183,14 @@ export default function BudgetsPage() {
       </div>
 
       {showAddModal && <AddBudgetModal onAdd={handleAddBudget} onClose={() => setShowAddModal(false)} />}
+
+      {editingBudget && (
+        <EditBudgetModal
+          budget={editingBudget}
+          onUpdate={handleUpdateBudget}
+          onClose={() => setEditingBudget(null)}
+        />
+      )}
     </div>
   )
 }

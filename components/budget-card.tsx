@@ -4,32 +4,43 @@ import type { Budget } from "@/lib/storage"
 import { useCurrency } from "@/components/currency-provider"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { TrashIcon, AlertCircleIcon, CheckCircle2Icon } from "lucide-react"
+import { TrashIcon, AlertCircleIcon, CheckCircle2Icon, PencilIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface BudgetCardProps {
   budget: Budget & { spent: number }
   onDelete: (id: string) => void
+  onEdit: (budget: Budget) => void
 }
 
-export default function BudgetCard({ budget, onDelete }: BudgetCardProps) {
+export default function BudgetCard({ budget, onDelete, onEdit }: BudgetCardProps) {
   const { formatAmount } = useCurrency()
   const percentage = Math.min((budget.spent / budget.limit) * 100, 100)
   const isExceeded = budget.spent > budget.limit
   const remaining = budget.limit - budget.spent
 
   return (
-    <Card className="overflow-hidden border-none shadow-md bg-white/50 backdrop-blur-sm transition-all hover:shadow-lg">
+    <Card className="overflow-hidden shadow-md transition-all hover:shadow-lg">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-base font-semibold">{budget.category}</CardTitle>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => onDelete(budget.id)}
-          className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-        >
-          <TrashIcon className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onEdit(budget)}
+            className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/10"
+          >
+            <PencilIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onDelete(budget.id)}
+            className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+          >
+            <TrashIcon className="h-4 w-4" />
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

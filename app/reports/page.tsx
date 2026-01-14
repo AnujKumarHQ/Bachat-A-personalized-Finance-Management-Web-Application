@@ -44,21 +44,20 @@ export default function ReportsPage() {
     try {
       const doc = new jsPDF()
 
-      // Helper for PDF currency formatting (jspdf doesn't support ₹ symbol by default)
+      // Helper for PDF currency formatting
       const formatPdfCurrency = (amount: number) => {
-        // Use the currency code (e.g., INR, USD) or a safe symbol for PDF
         const symbol = currency === 'INR' ? 'Rs.' : currency
         return `${symbol} ${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
       }
 
       // Title
       doc.setFontSize(20)
-      doc.setTextColor(15, 23, 42) // Slate 900
+      doc.setTextColor(15, 23, 42) // Keep PDF standard black/slate
       doc.text("Financial Report", 14, 22)
 
       // Date Range
       doc.setFontSize(10)
-      doc.setTextColor(100, 116, 139) // Slate 500
+      doc.setTextColor(100, 116, 139)
       const dateText = `Generated on ${new Date().toLocaleDateString()}`
       doc.text(dateText, 14, 30)
 
@@ -102,7 +101,7 @@ export default function ReportsPage() {
         head: [['Category', 'Amount', '% of Total']],
         body: categoryRows,
         theme: 'striped',
-        headStyles: { fillColor: [71, 85, 105], halign: 'left' }, // Slate 600
+        headStyles: { fillColor: [71, 85, 105], halign: 'left' },
         styles: { fontSize: 9 },
         columnStyles: {
           0: { cellWidth: 'auto' },
@@ -246,28 +245,28 @@ export default function ReportsPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-12">
+    <div className="min-h-screen bg-background pb-12">
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-white/20 bg-white/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/">
-                <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100">
-                  <ArrowLeftIcon className="h-5 w-5 text-slate-600" />
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted">
+                  <ArrowLeftIcon className="h-5 w-5 text-muted-foreground" />
                 </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                <h1 className="text-2xl font-bold text-foreground">
                   Financial Reports
                 </h1>
-                <p className="text-xs text-slate-500 font-medium">Analyze your financial health</p>
+                <p className="text-xs text-muted-foreground font-medium">Analyze your financial health</p>
               </div>
             </div>
             <Button
               onClick={handleExport}
               disabled={isExporting}
-              className="gap-2 bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/20 transition-all"
+              className="gap-2 shadow-lg transition-all"
             >
               {isExporting ? (
                 <span className="animate-spin">⏳</span>
@@ -283,74 +282,74 @@ export default function ReportsPage() {
       <div ref={reportRef} className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
         {/* Latest Activities Label */}
         <div className="flex justify-center">
-          <div className="inline-flex px-6 py-2 bg-white rounded-full border border-slate-200 shadow-sm">
-            <span className="text-sm font-medium text-slate-600">Latest Activities</span>
+          <div className="inline-flex px-6 py-2 bg-card rounded-full border border-border shadow-sm">
+            <span className="text-sm font-medium text-foreground">Latest Activities</span>
           </div>
         </div>
 
         {/* Summary Cards */}
         <div className="grid gap-6 md:grid-cols-4">
-          <Card className="border-none shadow-md bg-white/60 backdrop-blur-sm hover:shadow-lg transition-all duration-300 group">
+          <Card className="border-border shadow-sm bg-card hover:shadow-md transition-all duration-300 group">
             <CardHeader className="pb-2">
-              <CardTitle className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-                <div className="p-1.5 rounded-md bg-green-100 text-green-600 group-hover:scale-110 transition-transform">
+              <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                <div className="p-1.5 rounded-md bg-green-500/10 text-green-500 group-hover:scale-110 transition-transform">
                   <TrendingUpIcon className="h-3.5 w-3.5" />
                 </div>
                 Total Income
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-slate-900">{formatAmount(income)}</p>
-              <p className="text-xs text-green-600 font-medium mt-1">+12% from last period</p>
+              <p className="text-2xl font-bold text-foreground">{formatAmount(income)}</p>
+              <p className="text-xs text-green-500 font-medium mt-1">+12% from last period</p>
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-md bg-white/60 backdrop-blur-sm hover:shadow-lg transition-all duration-300 group">
+          <Card className="border-border shadow-sm bg-card hover:shadow-md transition-all duration-300 group">
             <CardHeader className="pb-2">
-              <CardTitle className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-                <div className="p-1.5 rounded-md bg-red-100 text-red-600 group-hover:scale-110 transition-transform">
+              <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                <div className="p-1.5 rounded-md bg-red-500/10 text-red-500 group-hover:scale-110 transition-transform">
                   <TrendingDownIcon className="h-3.5 w-3.5" />
                 </div>
                 Total Expenses
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-slate-900">{formatAmount(expenses)}</p>
-              <p className="text-xs text-red-600 font-medium mt-1">-5% from last period</p>
+              <p className="text-2xl font-bold text-foreground">{formatAmount(expenses)}</p>
+              <p className="text-xs text-red-500 font-medium mt-1">-5% from last period</p>
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-md bg-white/60 backdrop-blur-sm hover:shadow-lg transition-all duration-300 group">
+          <Card className="border-border shadow-sm bg-card hover:shadow-md transition-all duration-300 group">
             <CardHeader className="pb-2">
-              <CardTitle className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-                <div className="p-1.5 rounded-md bg-blue-100 text-blue-600 group-hover:scale-110 transition-transform">
+              <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                <div className="p-1.5 rounded-md bg-blue-500/10 text-blue-500 group-hover:scale-110 transition-transform">
                   <WalletIcon className="h-3.5 w-3.5" />
                 </div>
                 Net Income
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className={cn("text-2xl font-bold", net >= 0 ? "text-slate-900" : "text-red-600")}>
+              <p className={cn("text-2xl font-bold", net >= 0 ? "text-foreground" : "text-red-500")}>
                 {formatAmount(net)}
               </p>
-              <p className="text-xs text-slate-500 font-medium mt-1">Cash flow status</p>
+              <p className="text-xs text-muted-foreground font-medium mt-1">Cash flow status</p>
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-md bg-white/60 backdrop-blur-sm hover:shadow-lg transition-all duration-300 group">
+          <Card className="border-border shadow-sm bg-card hover:shadow-md transition-all duration-300 group">
             <CardHeader className="pb-2">
-              <CardTitle className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-                <div className="p-1.5 rounded-md bg-purple-100 text-purple-600 group-hover:scale-110 transition-transform">
+              <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                <div className="p-1.5 rounded-md bg-purple-500/10 text-purple-500 group-hover:scale-110 transition-transform">
                   <PieChartIcon className="h-3.5 w-3.5" />
                 </div>
                 Savings Rate
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className={cn("text-2xl font-bold", savingsRate >= 20 ? "text-green-600" : savingsRate >= 0 ? "text-yellow-600" : "text-red-600")}>
+              <p className={cn("text-2xl font-bold", savingsRate >= 20 ? "text-green-500" : savingsRate >= 0 ? "text-yellow-500" : "text-red-500")}>
                 {savingsRate.toFixed(1)}%
               </p>
-              <div className="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+              <div className="w-full bg-muted h-1.5 rounded-full mt-2 overflow-hidden">
                 <div
                   className={cn("h-full rounded-full transition-all duration-500", savingsRate >= 20 ? "bg-green-500" : "bg-yellow-500")}
                   style={{ width: `${Math.max(0, Math.min(100, savingsRate))}%` }}
@@ -363,15 +362,15 @@ export default function ReportsPage() {
         {/* Charts Section */}
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Trend Chart - Takes up 2 columns */}
-          <Card className="lg:col-span-2 border-none shadow-md bg-white/80 backdrop-blur-sm">
+          <Card className="lg:col-span-2 border-border shadow-sm bg-card">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-lg font-bold text-slate-800">Income vs Expenses</CardTitle>
+                  <CardTitle className="text-lg font-bold text-foreground">Income vs Expenses</CardTitle>
                   <CardDescription>Monthly financial performance trend</CardDescription>
                 </div>
-                <div className="p-2 bg-slate-100 rounded-lg">
-                  <BarChart3Icon className="h-5 w-5 text-slate-500" />
+                <div className="p-2 bg-muted rounded-lg">
+                  <BarChart3Icon className="h-5 w-5 text-muted-foreground" />
                 </div>
               </div>
             </CardHeader>
@@ -379,28 +378,29 @@ export default function ReportsPage() {
               <div className="h-[350px] w-full mt-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={trendData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }} barGap={8}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                     <XAxis
                       dataKey="month"
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: "#64748b", fontSize: 12 }}
+                      tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
                       dy={10}
                     />
                     <YAxis
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: "#64748b", fontSize: 12 }}
+                      tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
                       tickFormatter={(value) => `${currency === 'INR' ? '₹' : '$'}${value / 1000}k`}
                     />
                     <Tooltip
-                      cursor={{ fill: '#f1f5f9' }}
+                      cursor={{ fill: 'hsl(var(--muted)/0.5)' }}
                       contentStyle={{
-                        backgroundColor: "rgba(255, 255, 255, 0.9)",
-                        border: "none",
+                        backgroundColor: "hsl(var(--card))",
+                        borderColor: "hsl(var(--border))",
                         borderRadius: "12px",
                         boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                        padding: "12px"
+                        padding: "12px",
+                        color: "hsl(var(--foreground))"
                       }}
                       formatter={(value: number) => [formatAmount(value), ""]}
                     />
@@ -429,9 +429,9 @@ export default function ReportsPage() {
           </Card>
 
           {/* Category Pie Chart - Takes up 1 column */}
-          <Card className="border-none shadow-md bg-white/80 backdrop-blur-sm flex flex-col">
+          <Card className="border-border shadow-sm bg-card flex flex-col">
             <CardHeader>
-              <CardTitle className="text-lg font-bold text-slate-800">Expense Distribution</CardTitle>
+              <CardTitle className="text-lg font-bold text-foreground">Expense Distribution</CardTitle>
               <CardDescription>Where your money goes</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col justify-center">
@@ -453,10 +453,11 @@ export default function ReportsPage() {
                     </Pie>
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: "rgba(255, 255, 255, 0.9)",
-                        border: "none",
+                        backgroundColor: "hsl(var(--card))",
+                        borderColor: "hsl(var(--border))",
                         borderRadius: "8px",
                         boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                        color: "hsl(var(--foreground))"
                       }}
                       formatter={(value: number) => formatAmount(value)}
                     />
@@ -464,8 +465,8 @@ export default function ReportsPage() {
                 </ResponsiveContainer>
                 {/* Center Text */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                  <span className="text-xs text-slate-500 font-medium">Total</span>
-                  <span className="text-lg font-bold text-slate-900">{formatAmount(expenses)}</span>
+                  <span className="text-xs text-muted-foreground font-medium">Total</span>
+                  <span className="text-lg font-bold text-foreground">{formatAmount(expenses)}</span>
                 </div>
               </div>
 
@@ -475,9 +476,9 @@ export default function ReportsPage() {
                   <div key={index} className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
-                      <span className="text-slate-600 truncate max-w-[100px]">{entry.name}</span>
+                      <span className="text-muted-foreground truncate max-w-[100px]">{entry.name}</span>
                     </div>
-                    <span className="font-medium text-slate-900">{((entry.value / expenses) * 100).toFixed(1)}%</span>
+                    <span className="font-medium text-foreground">{((entry.value / expenses) * 100).toFixed(1)}%</span>
                   </div>
                 ))}
               </div>
@@ -486,11 +487,11 @@ export default function ReportsPage() {
         </div>
 
         {/* Category Breakdown Table */}
-        <Card className="border-none shadow-md bg-white/80 backdrop-blur-sm overflow-hidden">
-          <CardHeader className="border-b border-slate-100 bg-slate-50/50">
+        <Card className="border-border shadow-sm bg-card overflow-hidden">
+          <CardHeader className="border-b border-border bg-muted/30">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-lg font-bold text-slate-800">Category Analysis</CardTitle>
+                <CardTitle className="text-lg font-bold text-foreground">Category Analysis</CardTitle>
                 <CardDescription>Detailed breakdown of your spending</CardDescription>
               </div>
               <Button variant="outline" size="sm" className="hidden sm:flex">
@@ -500,42 +501,42 @@ export default function ReportsPage() {
           </CardHeader>
           <CardContent className="p-0">
             {sortedCategories.length === 0 ? (
-              <div className="p-8 text-center text-slate-500">
+              <div className="p-8 text-center text-muted-foreground">
                 No expense data available for this period
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="bg-slate-50/50">
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Category</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Amount</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">% of Total</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Trend</th>
+                    <tr className="bg-muted/30">
+                      <th className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider">Category</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-muted-foreground uppercase tracking-wider">Amount</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-muted-foreground uppercase tracking-wider">% of Total</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-muted-foreground uppercase tracking-wider">Trend</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-border">
                     {sortedCategories.map(([category, values], index) => (
-                      <tr key={category} className="hover:bg-slate-50/80 transition-colors">
+                      <tr key={category} className="hover:bg-muted/50 transition-colors">
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
                             <div
                               className="w-2 h-8 rounded-full"
                               style={{ backgroundColor: COLORS[index % COLORS.length] }}
                             />
-                            <span className="font-medium text-slate-700">{category}</span>
+                            <span className="font-medium text-foreground">{category}</span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 text-right font-semibold text-slate-900">
+                        <td className="px-6 py-4 text-right font-semibold text-foreground">
                           {formatAmount(values.amount)}
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-foreground">
                             {values.percentage.toFixed(1)}%
                           </span>
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <div className="w-24 ml-auto h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                          <div className="w-24 ml-auto h-1.5 bg-muted rounded-full overflow-hidden">
                             <div
                               className="h-full rounded-full"
                               style={{

@@ -24,7 +24,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         refreshUser()
 
         const { data: { subscription } } = supabaseBrowser.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED_OR_USER_EVENT' || event === 'USER_UPDATED') {
+            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
                 refreshUser()
             } else if (event === 'SIGNED_OUT') {
                 setUser(null)
@@ -40,8 +40,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
     const refreshUser = async () => {
         try {
-            const currentUser = authUtils.getCurrentUser()
-            if (!currentUser) {
+            // Get user directly from Supabase to avoid race conditions with localStorage
+            const { data: { user: authUser } } = await supabaseBrowser.auth.getUser()
+
+            if (!authUser) {
                 setUser(null)
                 setLoading(false)
                 return
@@ -51,13 +53,23 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
             const { data: profile } = await supabaseBrowser
                 .from('profiles')
                 .select('avatar_url, full_name')
-                .eq('id', currentUser.id)
+                .eq('id', authUser.id)
                 .single()
 
-            setUser({
-                ...currentUser,
-                name: profile?.full_name || currentUser.name,
+            const userData = {
+                id: authUser.id,
+                email: authUser.email || "",
+                name: profile?.full_name || authUser.user_metadata?.full_name || authUser.email?.split('@')[0] || "User",
                 avatar_url: profile?.avatar_url
+            }
+
+            setUser(userData)
+
+            // Sync with authUtils for legacy compatibility
+            authUtils.setCurrentUser({
+                id: userData.id,
+                email: userData.email,
+                name: userData.name
             })
         } catch (error) {
             console.error("Failed to refresh user data:", error)
