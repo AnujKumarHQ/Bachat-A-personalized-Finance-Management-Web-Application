@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { supabaseBrowser } from "@/lib/supabase/client"
 import { PlusIcon, SettingsIcon, LogOutIcon, UserIcon, BarChart3Icon, WalletIcon, HelpCircleIcon } from 'lucide-react'
 import {
   DropdownMenu,
@@ -46,9 +47,15 @@ export default function DashboardHeader({ onAddClick }: DashboardHeaderProps) {
     }
   }, [user])
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabaseBrowser.auth.signOut()
     authUtils.logout()
-    router.push("/login")
+
+    // Force clear Supabase cookies to prevent middleware loops
+    document.cookie = "sb-access-token=; path=/; max-age=0; SameSite=Lax; secure"
+    document.cookie = "sb-refresh-token=; path=/; max-age=0; SameSite=Lax; secure"
+
+    router.replace("/login")
   }
 
   if (!mounted) return null
